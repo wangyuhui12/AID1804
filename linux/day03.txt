@@ -1,0 +1,198 @@
+回顾：
+    命令　选项　参数
+    ls 　　-l 　Music     
+        　-a
+绝对路径　　相对路径
+
+. ..
+
+man ls  q退出
+
+cd 路径
+cd      返回到主目录（～）
+cd -    回到上次工作的目录
+cd ~    返回主目录
+
+pwd:获取当前工作目录的绝对路径
+
+mkdir rmdir
+touch 
+rm -r
+cat
+cp -ra       mv
+
+zip tar 
+ -cjvf  -czvf
+ -xvf
+
+ sudo
+
+ chmod 777 file
+     当前用户增加写权限   u+w
+p   o
+
+day03笔记：
+python
+1989　荷兰人Guido 编写
+
+python 2.x   python 3.x
+
+www.python.org  查看文档，下载第三方包，下载python
+
+python的特点：
+１．简单　简洁
+２．功能强大（自动化脚本，爬虫，网站后端，算法，　人工智能，接口）
+３．运行效率低，开发效率高
+４．代码开放（开源）
+５．python是一个胶水语言，可以很好的跟其他编程语言交互
+６．python有很好的跨平台性能
+７．python是解释型的，高级的，面向对象的编程语言
+
+*　解释型：需要解释器对程序解释为计算机能识别的内容
+*　编译型：先通过编译器对程序进行编译，然后将编译结果进行执行即可。
+
+*　面向过程：以语句为中心按步骤办事
+*　面向对象：以数据为中心调用对象来办事
+
+python干什么：
+１．自动化运维
+２．数据挖掘工程师（爬虫工程师）
+3. Python Web工程师（网站）
+４．平台开发
+５．大数据处理
+６．人工智能开发
+
+#!/usr/bin/python3
+
+第二种方法执行.py程序
+1.在程序的第一行加上解释器位置
+#!/usr/bin/python3
+2.将程序文件修改为有可执行权限的文件
+chmod 766 hello.py
+3.通过指明程序的路径即可运行
+./hello.py文件
+
+.py为后缀的文件即为python程序
+文字命名方法习惯使用英语单词
+
+数据--->语句--->语句块--->模块--->工程
+
+程序＝算法＋数据结构
+
+python支持的数据类型：
+
+数字（整数，小数，复数）
+字符串（字串　单个字符）
+布尔数据（Ｔｒｕｅ　Ｆａｌｓｅ）
+列表　Nonetype  元组　字典　集合
+文件　类类型　对象
+
+数字类型
+
+整型　int
+
+浮点型（小数）　float
+1.2e+23
+
+运算表达式
+
+表达式：由一个数字或者数字和运算符构成
+
+算数运算符
++   加法
+-　　　减法
+*　　　乘法
+/　　　除法　　　　　　　得到浮点数　　　真除法
+//　　地板除     取整数商　　　　　地板除
+%　　　取余　　　　　　　
+**　　幂运算
+
+当高精度数据和低精度数据进行运算的时候，结果自动转换为高精度
+
+变量和常量
+
+变量：
+    指的是自定义的标识符，用来存储代表某个值的量
+标识符：在编程中自己给需要起名的地方起的名字。如：变量名，类名，函数名等。
+１、数字字母下划线组成
+２、不能以数字开头
+３、不能和python保留字重复
+
+a a_b a1 aaa get_name a_a _var
+保留字：if while for else True False None break continue pass sum print range yield return in is not is and or lambda def class del
+= 　赋值符号　左侧为变量，右侧是要为变量赋的值
+
+１、python中变量不需要提前定义，何时使用直接赋值就可以，初次赋值即称为变量的初始化。
+２、变量可以被多次赋值，后赋值的内容会覆盖前面内容。
+３、python中变量没有固定类型，赋值什么类型的数据即为什么类型的变量
+
+常量：不可变的量
+
+
+布尔类型　bool
+True(逻辑真)  False(逻辑假) 
+
+逻辑比较语句
+
+> < >= <= == !=
+
+* a　< b < c python中支持比较运算符连续书写
+
+in / not in 
+is / is not 
+
+python中关于True 和 False的其他规定
+
+python中规定为False的：
+0, 0.0, 0+0j, Noe, [], set(),(),{}, frozenset(),''
+
+Nonetype:
+值：None
+作用：１、无意义，用作占位/用作无的逻辑判断
+    　２、函数没有返回值，则返回一个None表示
+    　３、有时候用作形参的默认值
+
+运算符号(复合运算符)
++=      
+-=
+*=
+/=
+//=
+%=
+**=
+
+\  在书写中连接换行位置
+
+注释的使用
+注释：　对代码的解释说明在运行过程中不参与程序的运行
+
+python中使用#引起单行注释，注释通常写在被标注代码的上方或者右侧
+
+python中三引号可以当作多行注释使用
+
+说明：良好的代码注释１５％左右
+
+内建函数：python提供的已经实现的函数，可以直接使用
+
+abs()  求绝对值内建函数
+abs(-9)  ----->  9
+
+round(number[, ndigits] -> number
+Round a number to a given precision in decimal(小数的)digits(default默认 0 digits).
+This returns an int when called with one argument, otherwise the same type as the number. ndigits may be negative.(负数)
+默认对number四舍五入到整数
+ndigits表示保留小数点后几位
+
+float(x) -> floating point number
+ convert(转换) a string or number to a floating point number, if possible.
+
+id()   查看一个变量内存
+ Return the identity of an object.
+
+ int(x=0) -> integer
+ int(x, base = 10) -> integer
+
+ type() 查看一个变量/常量的类型
+type(object) -> the object's type
+qq
+ help()

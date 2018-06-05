@@ -1,0 +1,93 @@
+
+python random模块
+
+random.random()
+    用于生成一个0到1的随机浮点数
+random.uniform(a, b)
+    用于生成一个指定范围内随机浮点数。random.uniform(20, 10)
+random.randint(a,b)
+    用于生成一个指定范围内的整数。例如：random.randint(10,20)
+random.randrange([start],stop[,step])
+    从指定范围内，按指定基数递增的集合中获取一个随机数。
+    如：random.randrange(0,100,2) 生成0~100的偶数
+random.choice(sequence)
+    从序列中随机获取一个元素。sequence表示一个有序类型，如tuple,list等
+random.shuffle(x[, random])
+    用于将一个列表中的元素打乱。
+random.sample(sequence,k)
+    从指定序列中随机获取指定长度的片断。sample函数不会修改原有序列。
+
+map函数
+格式：
+ map(func, *iterable) ---> map object
+作用：
+ 将可迭代对象的元素经过func函数转变成一个新的可迭代对象。
+ 例如：map(str,[1,2,3,4])   # ['1','2','3','4']
+
+s.join(iterable)
+ 用于把字符串用指定的符号链接起来，返回字符串格式。
+ S为需要的分隔符
+ '-'.join([1,2,3])  # 1-2-3
+
+a = [1,2,3]
+b = [4,5,6]
+zip(a,b) # [(1,4),(2,5),(3,6)]
+
+列表推导式：
+L = [1,2,3,4,5,6,7,8]
+[x for x in L if x%2==0]  # [2,4,6,8]
+
+
+
+mysql数据库
+进入MySQL：
+mysql -u root -p
+sudo mysql -u root -p
+
+显示数据库内容
+mysql> show databases;
+
+创建数据库
+mysql> create database gamedb;
+
+创建表
+ create table  库名.表(
+ 字段名   类型（宽度），
+ 字段名   类型（宽度），
+ 字段名   类型（宽度），
+ )；
+
+ 查看表结构
+ desc  库名.表;
+
+ 查看表记录
+ select * from gamedb.stuinfo;
+
+ 删除表记录
+ delete from 表名;
+
+ 删除表
+ drop table 表名；
+
+++++++++++++++++++++++++++++++
+#show   databases;
+#select database();
+#create  database  gamedb;
+#use   gamedb;
+#show  tables;
+#create  table   gamedb.t1(name char(10),age  int);
+#desc  gamedb.t1;
+#select  *  from  gamedb.t1;
+#insert into  gamedb.t1  values("bob",21);
+#insert into  gamedb.t1  values("lucy",18);
+#select   * from gamedb.t1;
+#delete from gamedb.t1;
+#drop   table  gamedb.t1;
+#drop  database  gamedb;
+
+创建表的语法格式
+create  table  库名.表名(
+字段名1    类型(宽度)   约束条件，
+字段名2    类型(宽度)   约束条件，
+字段名N    类型(宽度)   约束条件，
+);

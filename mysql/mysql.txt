@@ -1,0 +1,130 @@
+
+１、MySQL中的数据类型有：数值类型、字符类型、枚举类型和日期时间类型
+
+２、关系型数据库的核心内容是　关系　即　二维表
+
+３、简述客户端把数据存储到数据库服务器上的过程
+　　　１）连接到数据库　mysql -u root -p
+    　２）创建数据库、选择库 use 库名
+    　３）创建表　/ 修改表
+    　４）断开与数据库服务器的连接　exit
+
+４、char 和　varchar 的区别，　各自的特点
+char(定长): 浪费存储空间、但是性能高
+varchar(不定长):　节省存储空间，但是性能低
+
+
+　１、通过更改MySQL的配置文件实现
+　２、步骤
+    １、获取root权限
+        sudo -i
+    ２、备份MySQL的配置文件
+        cd /etc/mysql/mysql.conf.d/
+        cp mysqld.cnf mysqld.cnf.bak
+
+4、datetime  # 插入记录时不给值默认NULL
+5、timestamp # 默认返回系统当前时间
+
+select ... from 表名 where 
+字段名 运算符 (时间 interval 时间间隔单位);
+interval ：间隔类型关键字
+
+查找一天以内的记录
+select * from students
+where meeting > (now() - interval 1 day);
+查找一天以前三天以内的记录
+select * from t11
+where meeting < (now() - interval 1 day) and
+meeting > (now() - interval 3 day);
+等同于
+select * from t11
+where 
+meeting between (now() - interval 3 day)
+and (now() - interval 1 day);
+
+2、更改表记录
+    1、update 表名 set 字段1=值1,字段2=值2 where 条件;
+    2、注意
+        update语句后如果不加where条件,会将表中所有记录全部更新
+
+1、在蜀国英雄中,查找防御值倒数第二名到倒数第四名的英雄记录
+select * from sanguo where country="蜀国" order by fangyu limit 1,3;
+
+2、查找所有国家中 英雄数量最多的前2名国家的 国家名称和英雄数量
+select country, count(*) as number from sanguo
+group by country
+order by number desc
+limit 2;
+
+1、找出平均攻击力 >105 的国家的前2名,显示国家名和平均攻击力
+select country, avg(gongji) as GJ from sanguo
+group by country
+having GJ > 105
+order by GJ desc
+limit 2;
+
+7、distinct(不显示字段的重复值)
+    1、用法
+        select distinct 字段名1,字段名2... from 表名;
+
+    1、统计sanguo表中一共有多少个国家
+select count(distinct country) from sanguo;
+
+1、索引(index)
+    1、定义
+        对数据库中表的一列或者多列的值进行排序的一种结构(MySQL中索引用BTREE方式)
+    2、优点
+        可以加快数据的检索速度
+    3、缺点
+        1、当对表中的数据进行增加、删除和修改的时候,索引需要动态维护,降低了数据的维护速度
+        2、索引需要占用物理空间
+
+4、外键索引(foreign key)
+    1、定义
+        让当前表的字段值在另一个表的范围内选择
+    2、语法格式
+        foreign key(参考字段名)
+        references 被参考表名(被参考字段名)
+        on delete 级联动作
+        on update 级联动作
+    4、级联动作
+        1、cascade ：数据级联更新
+            当主表删除记录或更改被参考字段值时,从表级联更新
+        2、restrict(默认)
+            当主表删除记录或更改被参考字段值时,从表中有相关联记录则不允许主表操作
+        3、set null
+            当主表删除记录或更改被参考字段值时,从表中相关联记录的字段值设置为 NULL
+        4、no action
+            同 restrict,都是立即检查外键限制
+
+    5、删除外键限制
+        alter table 表名 drop foreign key 外键名;
+        外键名查看方式：show create table 表名;
+
+
+数据导入
+    1、作用 ：把文件系统的内容导入到数据库中
+    2、语法格式
+        load data infile "文件名"
+        into table 表名
+        fields terminated by "分隔符"
+        lines terminated by "\n"
+
+数据导出
+    1、作用
+        将数据库中表记录保存到系统文件里
+    2、语法格式
+        select ... from 表名
+        into outfile "文件名"
+        fields terminated "分隔符"
+        lines terminated by "\n"
+
+        2、找出每个国家攻击力最高的英雄的名字和攻击值
+select name, gongji from sanguo
+where gongji in(select max(gongji) from sanguo group by country);
+
+多表查询
+外连接
+内连接
+左连接
+右连接

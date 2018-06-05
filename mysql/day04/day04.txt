@@ -1,0 +1,337 @@
+
+回顾：
+１、索引(btree)
+　１、优点：加快速度的查询速度
+    缺点：
+        １、需要动态维护，降低了数据的维护速度
+        ２、占用物理空间
+
+普通索引(MUL) &&　唯一索引(UNI)
+　创建表时
+index(字段名), index(字段名)
+unique(字段名),unique(字段名)
+
+create [unique] index 索引名 on 表名(字段名)
+
+查看
+    desc 表名;
+    show index from 表名;  Non_unique: 
+
+删除索引
+drop index 索引名 on 表名;
+
+主键索引　&& 自增长属性(PRI,字段值不能重复，不能为NULL)
+　１、一个表中只能有一个主键字段，通常是编号
+　２、创建表
+    １、字段名　数据类型　primary key auto_increment ...
+    ２、primary key(字段名)
+ ３、已有表中
+    alter table 　表名 add primary key(字段名);
+    删除主键
+        先删除自增长属性
+            alter table 表名 modify id int;
+        删除主键
+            alter table 表名 drop primary key;
+
+外键索引(foreign key)
+创建表
+　[constraint 外键名]　froeign key(字段名)
+references ...
+on delete ..
+on update
+已有表中创建
+alter table 表名 add [constraint 外键名] foreign key(..) ..
+
+级联动作
+　cascade
+ restrict
+ set null
+ no action(同restrict)
+
+使用规则
+　两张表两个字段数据类型要一致
+　被参考字段必须为KEY的一种，通常就是主键
+
+外键删除
+　１、查看外键
+　２、alter table 表名 drop foreign key 外键名;
+
+数据导入
+导入步骤
+　１、在创建对应的表
+　２、查看数据库的搜索路径
+ show variables like "secure_file_priv";
+　３、拷贝文件
+ sudo cp 文件搜索路径
+　４、执行数据导入语句
+load data infile "文件名"
+into table 表名
+fields terminated by "分隔符"
+lines terminated by "\n"
+ ５、数据导出
+１、导出步骤
+ １、查看搜索路径
+ ２、执行数据导出命令
+ select ... from 表名
+ into outfile "文件名"
+ fields terminated by "分隔符"
+ lines terminated by "\n"
+
+ 表的复制
+ create table 表名
+ select 查询语句;
+
+ 只复制表结构
+  create table 表名
+ select 查询语句　where False;
+
+ 嵌套查询：
+ 　１、把内层的查询结果作为外层的查询条件
+
+
+ day04笔记：
+１、多表查询
+    select 字段名列表 from 表名列表 where 条件;
+ １、显示省市详细信息
+
+ 河北省　石家庄市
+ 河北省　廊坊市
+
+select sheng.s_name,city.c_name from sheng,city
+where
+sheng.s_id = city.cfather_id;
+
+
+省市县详细信息
+select sheng.s_name as "省", city.c_name as "市", xian.x_name as "县" from sheng, city, xian
+where
+sheng.s_id = city.cfather_id and city.c_id = xian.xfather_id;
++-----------+--------------+-----------+
+| 省        | 市           | 县        |
++-----------+--------------+-----------+
+| 河北省    | 石家庄市     | 正定县    |
+| 湖北省    | 武汉市       | 武昌区    |
++-----------+--------------+-----------+
+
+２、连接查询
+　１、内连接
+　　　１、语法格式
+    select 字段名　from 表1　
+    inner join 表２ on 条件 
+    inner join 表3 on 条件;
+   ２、示例
+   　１、用内连接显示省和市的详细信息
+select sheng.s_name, city.c_name from sheng
+inner join city
+on sheng.s_id = city.cfather_id;
+    ２、用内连接显示省市县的详细信息
+select sheng.s_name,city.c_name,xian.x_name from sheng
+inner join city
+on sheng.s_id = city.cfather_id
+inner join xian
+on city.c_id = xian.xfather_id;
+　２、外连接
+    １、左连接
+    　１、定义：以左表为主显示查询结果
+    　２、语法格式：
+        select 字段名列表　from 表１
+        left join 表2 on 条件
+        left join 表３ on 条件;
+    　３、示例
+        １、显示省和市的详细信息
+select sheng.s_name, city.c_name from sheng
+left join city
+on sheng.s_id=city.cfather_id;
+        ２、显示省市县详细信息，要求市全部显示
+select sheng.s_name, city.c_name, xian.x_name from sheng
+right join city
+on sheng.s_id=city.cfather_id
+left join xian
+on city.c_id=xian.xfather_id;     
+    ２、右连接(同左连接类似)
+
+３、数据备份(mysqldump,在linux终端操作)    
+
+　１、完全备份
+　　１、命令格式
+    mysqldump -u用户名 -p 源库名　> 路径/ XXX.sql
+源库名的表示方式：
+　---all-databases   备份所有的库
+　库名                备份单个库
+　-B 库1 库2 ...      备份多个库
+　库名　表1 表2  ...    备份指定库的指定表
+
+　２、增量备份
+示例：
+　１、备份db4库
+    mysqldump -uroot -p db4 > ~/mydata/db4.sql
+练习：
+　１、备份所有库all.sql，放到mydata目录中
+　２、备份db4库中的sheng, city和xian 三张表为db4scx.sql
+
+数据恢复
+　１、命令格式
+    mysql -u用户名　-p 目标库名　< 路径/***.sql
+　２、恢复db4库
+    １、创建空库
+    　create database db4 character set utf8;
+    ２、恢复
+    　mysql -uroot -p db4 < db4.sql
+ ３、从所有库的备份中来恢复某一个库(--one-database)
+  mysql -u用户名　-p --one-database 目标库名 < all.sql
+ ４、(1) 在db4.sheng 新增一条记录
+ 　　　　(2) 在db4库新创建一张表 t88
+
+ ５、注意
+ 　１、恢复库时如果恢复到原库会将表中数据覆盖，新增的表不会删除
+ 　２、数据恢复时如果要恢复的库不存在，则先要创建空库
+
+
+ **事务和事务回滚
+ 　定义：
+    一件事从开始发生到结束的整个过程
+　属性：
+    １、原子性
+    ２、一致性
+    ３、隔离性
+    ４、持久性
+　事务和事务回滚的应用
+　　　１、事务应用
+    　１、开启事务
+        mysql> begin;
+        mysql>...一条或者多条sql命令
+        ### 　此时autocommit被禁用
+    　２、终止事务
+        mysql> commit;
+        mysql> rollback;
+    ２、注意
+    　事务回滚只针对于表记录的操作：增、删、改有效，对创建库、表的操作无效
+
+
+存储引擎(处理表的处理器)
+　１、基本操作
+    １、查看所有的存储引擎
+    　show engines;
+    ２、查看已有表的存储引擎
+    　show create table 表名;
+     ### engine=innodb
+    ３、创建表时指定存储引擎
+    　create table 表名(...)engine=myisam;
+    ４、工作中常用的存储引擎
+    　InnoDB  MyIsam
+    [mysqld]
+    default-storage-engine=myisam
+ ２、常用存储引擎的特点
+    １、innodb　特点
+        １、共享表空间
+            表名.frm　　表结构
+            表名.ibd　　表记录&索引信息
+        ２、支持行级锁
+        
+    ２、myisam特点
+    　　１、独享表空间
+        　表名.frm   表结构
+        　表名.myd   表记录
+        　表名.myi   索引文件
+        支持表级锁
+
+    ３、锁
+    　１、加锁的目的
+        解决客户端并发访问的冲突问题
+    　２、锁的分类
+        １、锁类型
+            读锁(select)共享锁：加读锁后不能更改表中内容，但可以进行查询
+            写锁　互斥锁　排他锁
+        ２、锁粒度
+        　　表级锁
+        　　行级锁
+    ４、如何决定你的表使用哪种存储引擎
+    　１、执行查询操作多的表使用myisam(使用innodb浪费资源)
+    　２、执行写操作多的表使用innodb存储引擎
+
+MySQL调优
+　１、选择合适的存储的引擎
+　　　　查询多 ---> myisam
+    写操作多 ---> innodb
+ ２、SQL语句的调优(尽量避免全表扫描)
+ 　　１、在select、 where、　order by常涉及到的字段上面建立索引
+　　　２、where 子句中不使用　!=, 否则导致全表扫描
+　　　３、尽量避免NULL值判断，否则导致全表扫描
+    　　示例：
+        优化前:　select id from t1 where number is null;
+        优化后：
+            可以在number 字段上设置默认值0,确保number无NULL值，查询如下：
+            select id from t1 where number=0;
+    ４、尽量避免用 or 来连接条件，否则全表扫描
+        优化前：
+            select id from t1 where id=10 or id=20;
+        优化后：
+            select id from t1 where id=10
+            union all
+            select id from t1 where id=20;
+    ５、模糊查询尽量避免前置　%，　否则全表扫描
+    　　　　select id from t1 where name like "%c%"
+    ６、尽量避免　in 和　not in 的使用，否则全表扫描
+        示例：
+        select id from t1 where number in(1,2,3);
+        对于连续的值，尽量用between and
+    ７、尽量避免使用　select * from t1;
+        要用具体的字段名代替 *, 不要返回用不到的任何字段
+
+
+MySQL数据库与python交互
+　１、交互类型
+    python3:
+        pymysql $ sudo pip3 install pymysql
+    python2:
+        MySQLdb $ sudo pip install mysql-python
+ ２、connection对象
+ 　　　１、创建与数据库连接对象(调用connect()方法)
+        conn = pymysql.connect(参数列表)
+        参数列表：
+        　１、host : 主机地址，本机："localhost"
+         ２、port : mysql端口，默认3306
+         ３、database  : 数据库名
+         ４、password: 连接密码
+         ５、charset : 编码方式，推荐使用utf8
+         ６、user   : 用户
+    示例：
+    　　conn = pymysql.connect(host="localhost", user="root",password="tarena",database='db4',charset='utf8')
+    ２、连接对象（如：conn）的方法
+    　　１、close() 关闭连接
+    　　２、commit()　提交到数据库执行
+    　　３、rollback()　事务回滚操作
+    　　４、cursor()  创建游标对象，用于执行SQL语句获得结果
+
+    ３、游标对象(cursor对象)
+    　　１、作用：执行SQL语句
+    　　２、创建游标对象：调用连接对象的cursor()方法
+        示例：　cursor1 = conn.cursor()
+      ３、游标对象的方法
+      　　１、execute(operation[, 参数])  执行SQL语句
+      　　２、close()  关闭游标对象
+        ３、fetchone() 获取结果集的第一条记录，返回一个元组
+        ４、fetchmany(n) 获取结果集的n条记录，返回一个大元组，每条记录是一个小元组
+        ５、fetchall() 获取结果集的所有记录
+    ４、总结：pymysql使用流程
+    　　１、建立数据库连接　　conn
+    　　２、创建游标对象  cursor1 = conn.cursor()
+      ３、利用游标对象的方法操作数据库
+        cursor1.execute("sql语句")
+      ４、提交　　conn.commit()
+      ５、关闭游标　cursor1.close()
+      ６、关闭数据库连接　conn.close()
+
+９、workbench
+
+１０、ER模型
+    Entry - Relation
+
+　１、关系
+    １、一对一关系(１：１):班级和班长
+    ２、一对多关系(1:n):公司和职工
+    ３、多对多关系(m:n):学生和课程
+
+　２、ER图的绘制
+    １、矩形框代表实体，菱形框代表关系，椭圆形代表属性
+    

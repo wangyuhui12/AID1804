@@ -1,0 +1,286 @@
+
+王伟超
+wangweichao@tedu.cn
+
+MYSQL - Day01 笔记
+
+alter table 表名 rename 新表名;
+
+１、MySQL概述
+　１、什么是数据库
+    SQL命令
+    数据库是存储数据的仓库
+　２、哪些公司在用数据库
+    金融机构、游戏网站、购物网站、论坛网站　...
+　３、提供数据库服务的软件
+        MySQL, SQL_Server, Oracle, DB2, MongoDB, Mariadb
+        .....
+ ４、在生产环境中，如何选择使用哪个数据库软件
+         １）、是否开源
+            开源软件：MySQL、MongoDB、Mariadb
+            商业软件：Oracle  DB2   SQL_Server
+         开源　!= 免费
+         ２）、是否跨平台
+            不跨平台的：　SQL_Server
+            跨平台的：其他
+         ３）、公司的类型
+            商业软件：政府部门、金融机构
+            开源软件：游戏网站、购物网站、论坛网站　...
+
+
+５）、MySQL特点
+１、关系型数据库：
+　关系型数据库特点：
+    １、数据是以行和列的形式存储的
+    ２、表中的每一行叫一条记录
+    ３、表中的每一列叫一个字段
+    ４、表和表之间的逻辑关联叫关系
+  示例：
+    １、关系型数据库存储
+        表１、学生信息表
+          姓名　　年龄　　班级
+          星矢    25     三班
+          水冰月　 26     六班
+        表２、班级信息表
+          班级    班主任
+          三班    大空翼
+          六班    松人
+
+    ２、非关系型数据库存储
+        {“姓名”：“星矢”，　“年龄”：２５，　“班级”：“三班”，“班主任”：“大空翼”} 键-值对方式存储
+        非关系型数据库性能高于关系型数据库
+MySQL是跨平台数据库
+  可以在Unix,Linux,Window上运行数据库服务
+MySQL支持多种编程语言
+    python, java, php ...
+
+数据库软件、数据库、数据仓库：
+    １、数据库软件：
+        是一种软件，可以看得见，可操作，用来实现数据库逻辑功能
+    ２、数据库
+        是一种逻辑概念，用来存储数据的仓库，侧重存储
+    ３、数据仓库
+        从数据量来说，数据仓库要比数据库庞大得多，主要用于数据挖掘和数据分析。
+
+    数据库：user表　验证
+    数据仓库：哪个时间段用户登录量最多
+
+MySQL安装
+　１、Ubuntu　安装　MySQL
+    1, 安装服务端
+        sudo apt-get install mysql-server
+    2,安装客户端
+        sudo apt-get install mysql-client
+        /etc/apt/sources.list网页连接
+    3,Ubuntu　安装软件
+        1, sudo apt-get update
+            更新原列表
+            /etc/apt/sources.list
+        3, sudo apt-get -f install
+            修复依赖关系
+  ２、Windows 安装MySQL服务
+        １、下载MySQL安装包
+            mysql-installer *** 5.7.***.msi
+        ２、双击、按照教程安装即可
+
+MySQL　启动和连接
+　１、服务端启动
+    １、　sudo /etc/init.d/mysql start
+    ２、 sudo /etc/init.d/mysql status | stop | restart
+　２、客户端连接
+    １、 mysql -h主机地址　-u用户名 -p密码
+        mysql -hlocalhost -uroot -p123456
+        mysql -uroot -p
+    ２、本地登录可省略 -h 选项
+        mysql -uroot -p
+
+基本　SQL　命令
+　１、SQL命令的使用规则
+    １、每条命令必须以 ; 结尾
+    ２、SQL命令不区分字母大小写
+    ３、使用 \c 终止当前命令的执行
+
+  ２、库的管理
+    １、查看已有的库
+        show databases;
+    ２、创建库(指定字符集)
+        create database 库名 character set utf8;  db1
+        create database db2 character set utf8;
+    ３、查看创建库的语句
+        show create database 库名;
+    ４、查看当前所在库
+        select database();
+    ５、切换库
+        use 库名;
+    ６、查看库中已有表
+        show tables;
+    ７、删除库
+        drop database 库名;
+  ３、库的命名规则
+    １、可以使用数字、字母、下划线，但是不能为纯数字
+    ２、库名区分字母大小写
+    ３、库名具有唯一性
+    ４、不能使用特殊字符和mysql关键字
+
+表的管理：
+    １、表的基本操作
+        １、创建表
+            create table 表名(
+            字段名１ 数据类型,
+            字段名２ 数据类型,
+            字段名３ 数据类型,
+            ...
+           );
+        ２、查看创建表的语句(字符集、存储引擎ENGINE=InnoDB  default)
+
+            show create table 表名
+        ３、查看表结构
+            desc 表名;
+        ４、删除表
+            drop 表名;
+
+练习：
+    １、创建库python1
+    ２、在python1库中
+
+注意：
+　所有的数据都是以文件的形式存放在数据库目录下
+ 数据库目录：/var/lib/mysql
+
+表记录的管理：
+　１、在表中插入记录
+    １、 insert into 表名 values(值1), (值2), ...;
+    ２、 insert into 表名　(字段名１，字段名２，...)
+    　values(值１), (值2), ...;
+
+查询表记录：
+ １、 select * from 表名　[where 条件];
+ ２、select 字段名１，　字段名２，... from 表名 [where 条件];
+
+如何更改库的默认字符集
+　１、通过更改MySQL的配置文件实现
+　２、步骤
+    １、获取root权限
+        sudo -i
+    ２、备份MySQL的配置文件
+        cd /etc/mysql/mysql.conf.d/
+        cp mysqld.cnf mysqld.cnf.bak
+    ３、修改配置文件
+        vi mysqld.cnf
+        在[mysqld]下面添加：
+        character_set_server = utf8
+    ４、重启MySQL服务/重新加载配置文件(reload)
+        /etc/init.d/mysql restart | force-reload 平滑重启mysql
+
+    ５、创建库验证默认字符集是否为utf8
+
+６、客户端把数据存储到数据库服务器上的过程
+　１、连接到数据库服务器 mysql -u -p
+　２、选择库　use 库名
+　３、创建表/修改表
+　４、断开与数据库服务器的连接　exit | quit | \q
+
+
+７、数据类型
+　１、数值类型
+    整型
+        int 大整型(4个字节)　32 个　１　　(11位数字)
+             取值范围：0 ~ 2**32 - 1(42亿多)
+        tinyint 微小整型(1个字节)
+            有符号(signed默认)：-128~127
+            无符号(unsgned) : 0 - 255
+        smallint　小整型(2个字节)
+        bigint 极大整型(8个字节) 0 ~ 2**64-1
+    浮点型
+        float(4个字节,最多显示7个有效位)
+            用法：
+                字段名　float(m,n)  m代表总位数　n表示小数位位数
+                float(5, 2) 取值范围?　-999.99 ~ 999.99
+            注意：
+                １、浮点型插入整数时会自动补全小数位
+                ２、小数位如果多于指定的位数，会对下一位四舍五入
+        double(8个字节，最多显示15个有效位)
+        decimal(最多显示28个有效位)
+            字段名　decimal(m, n)
+            存储空间(整数部分和小数部分分开存储)
+                规则：将9位数字的倍数包装成4个字节
+                即：对于每个部分需要4个字节来存储9位数的每个倍数，剩余数字所需的存储空间如下表：
+                    剩余数字　　　字节
+                    　０　　　　　０
+                    1 - 2       1
+                    3 - 4       2
+                    5 - 6       3
+                    7 - 9       4
+                示例：  decimal(19, 9) ----> 9字节
+                    整数部分： 10 / 9 = 商 1 余　1 (4个字节　+ 1 字节=5字节)
+                    小数部分：9/9=商1余0 (4字节+0字节=4字节)
+　２、字符类型
+    char(定长)
+      宽度取值范围：1-255 name char()
+      不给定宽度默认为1
+    varchar(变长)
+      取值范围：1~65535
+
+    char 和　varchar 的特点
+        定长的特点char：浪费存储空间，但是性能高
+        varchar变长的特点：节省存储空间，但是性能低
+    text / longtext(4G) / blob / longblob(4G)
+
+    字符类型的宽度和数值类型的宽度的区别
+        数值类型的宽度为显示宽度，仅仅用于select查询时显示，和占用的存储空间大小无关，可用zerofill查看效果
+        字符类型的宽度超过则无法存储
+　３、枚举类型(字段值只能在列举的范围内选择)
+    １、单选(最多65535)
+        字段名　enum(值1, 值2,...,值N)
+    ２、多选(最多64个)
+        字段名　set(值1, 值2, ...,值N)
+　４、日期时间类型
+    １、year : 年　YYYY
+    ２、date : 日期　YYYYMMDD
+    ３、time : 时间　　HHMMSS
+    ４、datetime
+        datestamp : 日期时间　YYYYMMDDHHMMSS
+        ## 插入记录时datetime　不给值默认返回NULL,
+        而timestamp 字段默认返回系统当前时间
+
+面试题：
+    １、MySQL中的数据类型有：数值类型、字符类型、枚举类型和日期时间类型
+    ２、关系型数据库的核心内容是　关系　即　二维表
+    ３、简述客户端把数据存储到数据库服务器上的过程
+    　　　１）连接到数据库　mysql -u root -p
+        　２）创建数据库、选择库 use 库名
+        　３）创建表　/ 修改表
+        　４）断开与数据库服务器的连接　exit
+    ４、char 和　varchar 的区别，　各自的特点
+        char(定长): 浪费存储空间、但是性能高
+        varchar(不定长):　节省存储空间，但是性能低
+    ５、创建一个学校的库　school
+    create database school;
+    ６、在库中创建一个表　students 存储学生信息，字段如下学号（显示宽度为3，　不够用0填充），
+    use school;
+    姓名、年龄(不能为负数)、手机号、成绩（浮点型）、性别（单选）、爱好（多选）、
+    入学时间（年月日）
+    create table students(
+    name varchar(20),
+    age tinyint unsigned,
+    tell char(11),
+    score float(3,1),
+    sex enum('M',"G"),
+    likes set("python","play","reading"),
+    schooldate datetime)
+    ７、查看student的表结构
+    ８、在表中随意插入1条记录
+    ９、在表中的　姓名、手机号、成绩　三个字段插入3条记录
+    １０、查看所有学生的姓名、手机号和成绩
+
+
+
+
+
+
+
+
+
+
+
+

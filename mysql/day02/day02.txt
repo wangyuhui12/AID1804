@@ -1,0 +1,407 @@
+
+
+select database();
+
+１、日期时间函数
+ NOW()
+    select now();
+    返回服务器当前时间　YYYY-MM-DD HH:MM:SS
+ curdate()
+    返回服务器当前日期　　YYYY-MM-DD
+ curtime()
+    返回当前时间　HH:MM:SS
+ year(时间)
+    返回指定时间的年份
+ date(时间)
+    返回指定时间的日期
+ time(时间)
+    返回指定时间的时间
+mysql> insert into t11
+    -> values(2,'Tom',year(now()),date(now()),time(now()),now());
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from t11;
++------+-------+------------+------------+----------+---------------------+
+| id   | name  | birth_year | birthday   | class    | meeting             |
++------+-------+------------+------------+----------+---------------------+
+|    1 | wei   |       1990 | 1990-05-20 | 09:00:00 | 2018-05-30 00:00:00 |
+|    1 | jenny |       2018 | 2018-05-31 | 09:40:02 | 2018-05-31 09:40:02 |
+|    2 | Tom   |       2018 | 2018-05-31 | 09:43:03 | 2018-05-31 09:43:03 |
++------+-------+------------+------------+----------+---------------------+
+3 rows in set (0.00 sec)
+
+日期时间的运算
+　１、语法格式：
+    select ... from 表名 where 字段名　运算符　（时间 interval 时间间隔单位）;
+    interval　: 间隔类型关键字
+    时间间隔单位：
+        1 day, 2 day, 1 hour, 2 hour, minute,  year, month
+　２、示例
+    １、查询１天以内的记录
+        select * from t11 where meeting > (now() - interval 1 day);
+
+小于１个小时之前的时间
+mysql> select * from t11
+    -> where meeting < (now() - interval 1 hour);
++------+------+------------+------------+----------+---------------------+
+| id   | name | birth_year | birthday   | class    | meeting             |
++------+------+------------+------------+----------+---------------------+
+|    1 | wei  |       1990 | 1990-05-20 | 09:00:00 | 2018-05-30 00:00:00 |
++------+------+------------+------------+----------+---------------------+
+1 row in set (0.00 sec)
+
+查询一天以前三天以内的记录
+mysql> select * from t11
+    -> where meeting > (now() - interval 3 day)
+    -> and meeting < (now() - interval 1 day);
++------+------+------------+------------+----------+---------------------+
+| id   | name | birth_year | birthday   | class    | meeting             |
++------+------+------------+------------+----------+---------------------+
+|    1 | wei  |       1990 | 1990-05-20 | 09:00:00 | 2018-05-30 00:00:00 |
++------+------+------------+------------+----------+---------------------+
+1 row in set (0.00 sec)
+
+    ２、表字段的操作
+    　１、语法：alter 表名　执行动作；
+    　２、添加字段(add)
+        alter table 表名　add 字段名　数据类型;
+        alter table 表名　add 字段名　数据类型 first;
+        alter table 表名　add 字段名　数据类型 after 字段名;
+    　３、删除字段名(drop)
+        alter table 表名 drop 字段名;
+    　４、修改字段数据类型(modify)
+        alter table 表名　modify 字段名　新数据类型;
+        ＃　修改数据类型会受到表中原有数据的限制
+
+
+添加字段名
+mysql> alter table t0 add
+    -> salary decimal(15,2) after age;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc t0;
++--------+--------------------------+------+-----+---------+-------+
+| Field  | Type                     | Null | Key | Default | Extra |
++--------+--------------------------+------+-----+---------+-------+
+| id     | int(2) unsigned zerofill | YES  |     | NULL    |       |
+| name   | varchar(15)              | YES  |     | NULL    |       |
+| age    | tinyint(3) unsigned      | YES  |     | NULL    |       |
+| salary | decimal(15,2)            | YES  |     | NULL    |       |
+| sex    | enum('girl','boy')       | YES  |     | NULL    |       |
++--------+--------------------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+修改字段名
+mysql> alter table t0 modify name char(20);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc t0;
++--------+--------------------------+------+-----+---------+-------+
+| Field  | Type                     | Null | Key | Default | Extra |
++--------+--------------------------+------+-----+---------+-------+
+| id     | int(3) unsigned zerofill | YES  |     | NULL    |       |
+| name   | char(20)                 | YES  |     | NULL    |       |
+| age    | tinyint(3) unsigned      | YES  |     | NULL    |       |
+| salary | decimal(15,2)            | YES  |     | NULL    |       |
++--------+--------------------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+表记录的管理（删除、更改）
+　１、delete from 表名 where 条件;
+　２、注意：
+    delete 语句后如果不加where 条件，会将表中所有记录全部删除
+
+mysql> delete from t0 where id=033;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from t0;
++------+------+------+--------+
+| id   | name | age  | salary |
++------+------+------+--------+
+|  002 | NULL | NULL |   NULL |
+|  003 | NULL | NULL |   NULL |
++------+------+------+--------+
+2 rows in set (0.00 sec)
+
+更新表记录
+　１、update 表名　set 字段1=值1，字段2=值2　where 条件；
+    注意：update 语句后如果不加where　条件，会将表中所有记录全部更新
+
+mysql> update t0 set id = 33 where id=001;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from t0;
++------+------+------+--------+
+| id   | name | age  | salary |
++------+------+------+--------+
+|  033 | NULL | NULL |   NULL |
+|  002 | NULL | NULL |   NULL |
+|  003 | NULL | NULL |   NULL |
++------+------+------+--------+
+3 rows in set (0.00 sec)
+
+运算符操作
+　数值比较&字符比较
+    数值比较运算符：= != > >= < <=
+    字符比较运算符：= !=
+
+　逻辑比较
+    运算符
+        and (两个或多个条件同时满足)
+        or (两个或多个条件有一个条件满足就可以)
+　范围内比较
+        运算符
+            where 字段名 between 值１　and 值2
+            where 字段名 in(值1,值2,...)
+            where 字段名 not in(值1, 值2,..)
+
+
+示例：
+将吴国英雄中攻击值为110的英雄的攻击值设置为100，防御值设置为60
+update sanguo set gongji=100,fangyu=60
+where
+country='吴国' and gongji=110;
+
+查找攻击值在100~200之间的蜀国英雄信息
+select * from sanguo
+where
+gongji between 100 and 200 and country="蜀国";
+
+查找编号为１、３或５的蜀国英雄　和　貂蝉的编号、姓名和国家
+mysql> select id,name,country from sanguo
+    -> where
+    -> name='貂蝉' or (country='蜀国' and id in (1,3,5));
++------+-----------+---------+
+| id   | name      | country |
++------+-----------+---------+
+|    1 | 诸葛亮    | 蜀国    |
+|    3 | 关6羽     | 蜀国    |
+|    6 | 貂蝉      | 魏国    |
++------+-----------+---------+
+3 rows in set (0.00 sec)
+
+查找蜀国和吴国以外的国家的女英雄的信息
+mysql> select * from sanguo
+    -> where
+    -> not(country = '吴国' or country='蜀国') and sex='女';
++------+--------+--------+--------+------+---------+
+| id   | name   | gongji | fangyu | sex  | country |
++------+--------+--------+--------+------+---------+
+|    6 | 貂蝉   |    666 |     10  | 女    | 魏国    |
++------+--------+--------+--------+------+---------+
+1 row in set (0.00 sec)
+
+
+匹配空、非空
+    空：　is null
+    非空: is not null
+ 注意：
+     null : 空值，　必须用is 或者 is not 去匹配
+     "" : 空字符串，只能用　= 或者 != 去匹配
+
+
+查找姓名为null的蜀国女英雄信息
+select * from sanguo
+where
+sex='女' and country='蜀国' and name is null;
+
+查找姓名为‘’的英雄的 id 姓名　和　国家；
+select id, name, country from sanguo
+where
+name="";
+
+
+模糊比较
+　语法格式：
+    where 字段名 like 表达式
+　表达式
+    _ :　匹配单个字符
+    % : 匹配0到多个字符
+
+匹配名字里面至少有两个字符：
+select name from sanguo where name like "_%_";
+
+匹配名字不为null的所有记录
+select name from sanguo where name like "%";
+
+匹配名字为3个字符的记录
+select name from sanguo where name like "___";
+
+匹配名字以　‘赵'　开头的记录
+select name from sanguo where name like '赵%';
+
+
+查找含 'er' 的表名
+mysql> show tables like '%er%';
++-------------------------+
+| Tables_in_MOSHOU (%er%) |
++-------------------------+
+| hero                    |
++-------------------------+
+1 row in set (0.00 sec)
+
+
+
+SQL　查询
+ 总结(执行顺序)
+    3 select ..聚合函数 from 表名
+    1 where ..
+    2 group by ..
+    4 having ...
+    5 order by ...
+    6 limit ...
+
+order by 给查询结果进行排序
+    order by 字段名　排序方式
+    排序方式
+        ASC(默认) : 升序
+        DESC :  降序
+
+将魏蜀两国男英雄中名字为三个字的英雄按防御值升序排序
+select * from sanguo
+where
+name like "___" and sex='男' and country in('魏国','蜀国')
+order by fangyu;
+
+limit(永远放在SQL语句的最后写)
+    作用：限制显示查询记录的个数　　分页(limit)
+    用法：
+        limit n ----> 显示n 条记录
+        limit m, n ----> 从m+1 条记录开始，　显示n条记录
+        limit 2,3 ----> 显示3,4,5三条记录
+        ### m 的值是从0开始计数，2则表示第三条记录
+
+在所用蜀国英雄中，查找防御值倒数第二名到倒数第四名的记录
+select * from sanguo
+where country="蜀国"
+order by fangyu
+limit 1,3;
+
+在蜀国且名字不为空值的英雄中，查找攻击值前三名的英雄的姓名、攻击值和国家
+select name,gongji,country from sanguo
+where
+country='蜀国' and name is not null
+order by gongji desc
+limit 3;
+
+
+聚合函数：
+　分类
+    １、 avg(字段名): 求该字段的平均值
+    ２、 sum(字段名)
+    ３、 max(字段名)
+    ４、 min(字段名)
+    ５、 count(字段名) : 统计该字段记录的个数
+
+示例：
+攻击力最强值
+select max(gongji) as best from sanguo;
+
+统计表中　id 和　name 字段分别有多少条记录
+select count(id) as id,count(name) as name from sanguo;
+### 空值null不会被统计，空字符串会被统计　　count(*)统计有多少条记录
+
+示例：
+统计蜀国英雄中攻击值 > 200　的英雄的个数
+select count(gongji) as gongji from sanguo
+where
+country='蜀国' and gongji > 200;
+
+group by(分组)
+ 作用：给查询结果进行分组
+ 用法：
+    group by 字段名
+示例：
+ 计算一下每个国家的平均攻击力
+mysql> select country, avg(gongji) as ATK from sanguo group by country;
++---------+----------+
+| country | ATK      |
++---------+----------+
+| 吴国    | 100.0000 |
+| 蜀国    | 578.2500 |
+| 魏国    | 328.3333 |
++---------+----------+
+执行ＳＱＬ命令的顺序：
+    １、分组　group
+    ２、聚合 求出平均值
+    ３、去重　去掉重复，保留一个
+
+查找所有国家中　英雄数量最多的前两名国家的　国家名称和英雄数量
+select country,  count(name) as s from sanguo
+group by country
+order by s desc
+limit 2;
+
+注意：
+    group by 语句后的字段名必须要为 select 之后的字段名，如果select 之后的字段，
+    如果查询字段和group by之后的字段不一致，则必须要对该字段进行聚合处理（聚合函数）
+
+
+having 对查询的结果进行进一步的筛选
+示例：
+    找出平均攻击力大于105国家的前两名，　显示国家名和平均攻击力
+mysql> select country, avg(gongji) as ATK from sanguo
+    -> group by country
+    -> having ATK > 105
+    -> order by ATK desc
+    -> limit 2;
++---------+----------+
+| country | ATK      |
++---------+----------+
+| 蜀国    | 578.2500 |
+| 魏国    | 328.3333 |
++---------+----------+
+
+注意：
+    １、having 语句通常与 group by 语句联合使用，用来过滤由 group by 语句返回的结果集
+   　２、where 只能操作表中实际存在的字段(desc 表名;),
+    having 操作的是由聚合函数生成的显示列
+
+聚合函数---> group by 最佳拍档---> having   铁三角
+
+distinct(不显示字段的重复值)
+ 用法
+ select distinct 字段名１，字段名２，...　from 表名;
+ 注意：
+    distinct 处理的是　distinct 和　from 之间的所有字段，所有字段的值必须全部相同才能去重
+ 示例：
+ 统计有多少个国家
+ select distinct country from sanguo;
+
+查询表记录的时候可以做数学运算
+ 　运算符：
+    + - * / %
+   示例：
+   查询时显示所有英雄攻击力翻倍
+
+约束
+　１、作用：
+    为了限制无效的数据插入到数据表中
+ ２、约束分类
+    默认约束(default)
+      作用：插入记录时不给该字段赋值使用默认值
+      格式：字段名　数据类型　default 值
+    非空约束(not null)
+      作用：不允许该字段的值有NULL记录
+      格式：　字段名　数据类型　not null
+
+      ＃＃可连用：字段名　数据类型　not null default 值
+
+
+select user_id,count(article_id) as article from comment
+group user_id
+order by article desc
+limit 10;
+
+
+
+
+
+
+
+
+

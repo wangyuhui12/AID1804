@@ -1,0 +1,294 @@
+
+
+函数式编程
+ 函数式编程是指用一系列函数决定问题
+
+函数是一等公民
+ 函数本身可以赋值给变量，赋值后变量绑定函数
+ 允许将函数本身作为参数传入另一个函数
+ 允许返回一个函数
+
+函数的可重入性：
+ 可重入是指一个函数传的参数一定，则结果必须一定
+ 要求：
+    def定义的函数不要访问除局部变量以外的变量
+
+示例：
+以下是不可重入的函数
+y = 200
+def myadd(x):
+    return x + y
+
+print(myadd(10)) # 210
+y = 300
+print(myadd(10))  # 310
+
+#以下是可重入的函数myadd
+def myadd(x, y):
+    return x + y
+print(myadd(10, 20))
+
+高阶函数 High Order Function
+ 什么是高阶函数：
+    满足下列一个条件的函数即为高阶函数：
+    1、函数接受一个或多个作为参数传入
+    2、函数返回一个函数
+
+python中内置的(builtins)高阶函数
+    map, filter, sorted
+
+map 函数
+ map(func, *iterables)
+    用函数和可迭代对象中的每一个元素作为参数计算出新的可迭代对象，当最短的一个可迭代对象不再提供数据时， 此可迭代对象生成结束
+
+示例：
+def pow2(x):
+    return x**2
+for x in map(pow2, range(1, 10)):
+    print(x)
+
+>>> fn = lambda x : x**x
+>>> for i in map(fn, range(1, 10)):
+...     print(i)
+... 
+1
+4
+27
+256
+3125
+46656
+823543
+16777216
+387420489
+
+>>> f1 = lambda x : x**2
+>>> L2 = [x for x in map(f1, range(10)) if x%2]
+>>> L2
+[1, 9, 25, 49, 81]
+
+print(sum(map(lambda x: x ** 2, range(1, 10))))
+def mypow(x):
+    return x ** 2
+print(sum(map(mypow, range(1, 10))))
+s1 = 0
+for x in map(mypow, range(1,10)):
+    s1 += x
+
+def mypow(x):
+    return x ** 3
+s1 = 0
+for x in map(mypow, range(1,10)):
+    s1 += x
+
+for x in map(pow, range(1, 10), range(9, 0, -1)):
+    s1 += x
+
+print(sum(map(pow, range(1, 10), range(9, 0, -1))))
+
+filter　函数
+　格式：
+    filter(func, iterable)
+ 作用：
+    筛选可迭代对象iterable中的数据，返回一个可迭代对象，此可迭代对象将对iterable进行筛选
+　说明：
+    函数func将对每个元素进行求值，返回False则将此数据丢弃，返回True则保留此数据
+　示例：
+    def isodd(x):
+        return x % 2 == 1
+    for x in filter(isodd, range(10)):
+        print(x)
+    even = [x for x in filter(lambda x : x%2 == 0, range(10))]
+
+练习：
+１、将１～２０内的偶数用filter筛选出来，形成列表
+even = [x for x in filter(lambda x: x%2 == 1, range(1, 21))]
+２、用filter函数将1~100之间的所有素数(prime)放入到列表中
+def isprime(n):
+    if n <= 1:
+        return False
+    for j in range(2, n):
+        if i%j == 0:
+            return False
+    return True
+
+L = list(filter(isprime, range(100)))
+
+sorted 函数
+　作用：
+    将原可迭代对象的数据进行排序，生成排序后的列表
+　格式：
+    sorted(iterable, key=None, reverse=False)
+ 说明：
+    iterable　可迭代对象
+    key函数是用来提供一个参考值，这个值将作为排序的依据
+    reverse标志用来设置是否降序排序
+　示例：
+L = [5, -2, -4, 0, 3, 1]
+L2 = sorted(L)   # L2 = ...
+L2 = sorted(L, reverse=True)
+L3 = sorted(L, key=abs)  # 绝对值排序
+
+练习：
+ names = ['Tom', 'Jerry', 'Spike', 'Tyke']
+>> sorted(names, key=lambda x:x[::-1])
+ 让names排序
+    排序的依据是字符串的反序
+
+ 写一个函数input_student(),output_student()得到学生的姓名、成绩、年龄
+ (可以把以前的input_student函数直接拿过来用)
+ 1) L = input_student()  #输入一些学生信息
+ print("按年龄从大到小排序后")
+ L2 = sorted(L, ..)
+ output_student(L2)
+ print("按成绩从高到低排序后")
+ L3 = sorted(L, ...)
+ output_student(L3)
+
+
+ 递归函数 recursion
+  函数直接或间接的调用自身
+
+示例：
+def story():
+    time.sleep(2)
+    print("从前有座山，山上有座庙")
+    print("庙里有个老和尚，将故事")
+    story()  # 直接调用自身
+
+story()
+
+#函数间接调用自身的递归
+def fa():
+    fb()
+def fb():
+    fa()
+fa()
+
+递归说明：
+ 1、递归一定要控制递归的层数，当符合某一条件时要终止递归
+ 几乎所有帝国都能用while循环来代替
+
+ 控制递归的层次示例：
+ def fx(n):
+    print("递归进入第", n, "层")
+    if n == 3:
+        return
+    fx(n+1)
+    print("递归退出第", n, '层')
+f(1)
+print("程序结束")
+
+递归的优缺点：
+ 优点：
+    递归可以把问题简单化，让思路更为清晰，代码更简洁
+ 缺点：
+    递归因系统环境影响大，当递归深度太大时， 可能会得到不可预知的结果
+
+递归函数的实现方法：
+ 先假设函数已经实现
+
+示例见：
+    03_recursion_sum.py
+
+xiao练习
+编写程序用递归求阶乘：
+def myfac(x):
+    ..
+print(myfac(5))
+pirnt(myfac(4))
+
+
+闭包 closure
+ 将内嵌函数的语句和这些语句的执行环境打包在一起时，得到的对象称为闭包(closure)
+
+闭包必须满足三个条件：
+ 1、必须有一个内嵌函数
+ 2、内嵌函数必须引用外部函数中的变量
+ 3、外部函数返回值必须是内嵌函数
+
+示例：
+def make_power(y):
+    def fx(arg):
+        return arg * y
+    return fx
+
+示例：
+ 用参数返回相应的数学函数的示例
+    y = a*x**2 + b*x+c
+def make_function(a, b, c):
+    def fx(x):
+        return a*x**2 + b*x + c
+    return fx
+fx1 = make_function(4, 5, 6)
+print(fx1(2))
+
+练习：
+1、编写函数求阶乘 myfac(x), 用什么方法都可以
+2、写程序算出1~20的阶乘的和
+ 1！+2！+..+20！
+3、改写之前学生信息管理程序，添加如下四个功能
+ 5) 按成绩从高至低打印学生信息
+ 6) 按成绩从低至高打印学生信息
+ 7) 按年龄从高至低打印学生信息
+ 8) 按年龄从低至高打印学生信息
+ （要求原来输入的列表顺序保持不变）
+4、已知有列表：
+    L = [[3, 5, 8], 10, [[13, 14], 15, 18], 20]
+    1) 写一个函数print_list(lst)打印出所有元素print_list(L)  #打印
+    2) 写一个函数sum_list(lst)
+    返回这个列表中所有元素的和
+注：
+    type(x) 可以返回一个变量的类型
+如
+    type(20) is int    # True
+
+from import语句
+　语法：
+    from 模块名　import 模块属性名１ [as 属性新名１], [,模块属性名２[as 属性新名２]]
+
+　作用：
+    将某模块内的一个或多个属性导入到当前模块的作用域
+
+　示例：
+from math import pi 
+from math import pow, sqrt
+from math import factorial as fac
+
+from math import * 语句
+　语法：
+    from 模块名　import *
+ 作用：
+    将某模块的所有属性导入到当前模块
+　示例:
+    from math import *
+    from sys import *
+
+dir　函数
+　dir([对象])
+    返回一个字符串列表
+作用：
+    １、如果没有参数调用，则返回当前作用域内的所有变量的列表
+    ２、如果给定一个对象作为参数，则返回这个对象的所有变量的列表
+    　　１）、对于一个模块，返回这个模块的全部属性
+    　　２）、对一个类对象，返回类对象的所有变ｑ量，递归基类对象的所有变量
+    　　３）、对于其他对象，返回所有的变量，类变量，基类变量
+
+数学模块 math
+ 模块名 math
+ 相关文档见
+  math.html
+
+时间模块 time
+　此模块提供了时间相关的函数，且一直可用
+
+time.struct_time(tm_year=2008, tm_mon=8, tm_mday=8, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=4, tm_yday=221, tm_isdst=0)
+
+time.mktime(tuple)  将本地日期时间元组转换为新纪元秒数时间(UTC为准)
+
+time.localtime([secs])  将UTC秒数时间转换为日期元组（以本地时间为准)
+日期元组：
+time.struct_time(tm_year=2008, tm_mon=8, tm_mday=8, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=4, tm_yday=221, tm_isdst=0)
+
+time.gmtime([secs])     用给定秒数转换为用UTC表达的时间元组
+(缺省返回当前时间元组)
+时间元组：Fri Aug  8 00:00:00 2008

@@ -1,0 +1,150 @@
+
+
+with　语句：
+　语法：
+    with 表达式１　[as 变量１]，表达式２ [as 变量2]:
+        语句块
+  作用：
+    适用于资源进行访问的场合，确保使用过程中不管是否发生异常，都会执行必须的
+    “清理工作”操作，并释放资源
+
+   说明：
+    能够用于with语句进行管理的对象必须是环境管理器
+
+环境管理器：
+    １、类内有__enter__和__exit__实例方法的类被称为环境管理器
+    ２、能够用with语句管理的对象必须是环境管理器
+    ３、__enter__方法将在进入with语句时被调用，并返回由as变量管理的对象
+    ４、__exit__将在离开with语句时被调用，且可以用参数来判断在离开with语句是否有异常发生并做出相应的处理
+
+示例：
+class A:
+    def __enter__(self):
+        print("已进入with语句")
+        return self  #　返回的对象将由　as 绑定
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print("已离开with语句")
+
+详见：
+ 03_context.py
+
+
+运算符重载
+　什么是运算符重载
+    让自定义的类生成的对象（实例）能够使用运算符进行操作
+
+　作用：
+    让自定义的类的实例像内建对象一样进行运算符操作
+    让程序间接易读
+    对自定义的对象，将运算符赋予新的运算规则
+
+算术运算符的重载：
+    __add__(self, rhs)      self + rhs
+
+反向算术运算符的重载
+　当左手边的类型为内建类型，右手边为自定义类型时，　要实现运算必须用以下方法重载
+__radd__(self, lhs)      lhs + self
+
+复合赋值算术运算符的重载
+    __iadd__(self, rhs)
+    __isub__(self, rhs)
+    __imul__(self, rhs)
+    __itruediv__(self, rhs)
+    __ifloormod__(self, rhs)
+    __imod__(self, rhs)
+    __ipow__(self, rhs)
+
+比较运算符的重载
+    __lt__(self, rhs)    self < rhs  little than
+    __le__(self, rhs)    self <= rhs    little or equal
+    __gt__(self, rhs)    self > rhs
+    __ge__(self, rhs)    self >= rhs
+    __eq__(self, rhs)    self >= rhs
+    __ne__(self, rhs)    self == rhs
+
+注意：
+    比较运算符通常返回True 或　False
+
+为运算符重载
+
+    __invert__(self)         ~self　取反
+    __and__(self)         self & rhs　位与
+    __or__(self)         self | rhs　位或
+    __xor__(self)         self ^ rhs　位异或
+    __lshift__(self)         self << rhs　左移
+    __rshift__(self)         self >> rhs　右移
+
+反向位运算符重载
+
+复合赋值位运算符重载
+
+一元运算符的重载
+    __neg__(self)       - self   负号
+    __pos__(self)       + self   正号
+    __invert__(self)    ~ self   取反
+
+一元运算符的重载方法：
+    class 类名：
+        def __xxx__(self):
+            ...
+
+示例见：
+ 09_mylist.py
+
+Python 命名最好用驼峰命名法：
+            MyList    MyRange   大驼峰（所有单词首字母大写，其余小写）
+            getStudentAge    小驼峰（第一个单词首字母小写）
+
+
+in / not in 运算符的重载
+    重载方法：
+    __contains__(self, e)            e in self 成员运算
+
+索引和切片运算符的重载
+__getitem__(self, i)    x = self[i] 索引/切片取值
+__setitem__(self, i, v)  self[i] = v 赋值
+__delitem__(self, i)   del self[i]  del语句删除索引等
+
+作用：
+　让自定义的类型的对象能够支持索引和切片操作
+
+Slice 构造函数　
+
+练习：
+实现有序集合 OrderSet 类，能实现两个集合的交集　&并集　|, 补集 -, 对称补集　^, ==
+，!=, in / not in 集合操作
+(要求集合内用list存储数据)
+s1 = OrderSet([1, 2, 3, 4])
+s2 = OrderSet([3, 4, 5])
+print(s1 & s2)   # OrderSet([3, 4])
+print(s1 | s2)    # OrderSet([1, 2, 3, 4, 5])
+print(s1 ^ s2)   # OrderSet([1, 2, 5])
+if OrderSet([1, 2, 3]) != OrderSet([1, 2, 3, 4]):
+    print("不相等")
+
+if s2 == OrderSet(3, 4, 5):
+    print("s2 和 OrderSet(3, 4, 5)相等")
+
+if 2 in s1:
+   print("2 in s1")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

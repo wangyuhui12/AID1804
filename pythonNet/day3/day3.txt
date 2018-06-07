@@ -1,0 +1,137 @@
+前情回顾
+
+tcp套接字  
+recv 函数从缓冲区取内容
+send   sendall  两者均可发送
+粘包 ：一次接收到多次发送的内容
+处理粘包：加结束标志，构建消息结构，发送延迟
+
+udp 套接字 
+无连接的不需要listen 和 accept
+发送接收消息 sendto   recvfrom
+
+套接字属性 
+fileno()   getpeername()  setsockopt()
+
+广播：一方发送多方接收
+
+HTTP协议
+请求类别 ： GET  POST  PUT  HEAD  DELETE
+响应情况 ： 200  404  
+*********************************************
+
+基础的http服务器
+1.接收HTTP请求
+2.给出一定的响应
+
+IO  input   output
+
+在内存中存在数据交换的操作都可以认为是输入输出
+比如：
+内存和磁盘交互  读写操作
+内存和网络交互  recv  send
+
+IO密集型程序：程序执行中大量的IO操作，而较少的cpu运算。消耗cpu较少，运行时间长
+
+CPU密集型程序（计算密集型）：程序中大量的操作都需要cpu运算，IO操作较少。消耗cpu大，运行速度快
+
+IO 分类  
+阻塞IO  非阻塞IO  IO多路复用  事件IO   异步IO。。
+
+阻塞IO ： 默认形态 效率很低的一种IO情形
+
+阻塞情况 ：* 因为某种条件没有达成造成的阻塞
+            e.g.   accept   recv   input
+					
+					 * 处理IO事件的时候耗时比较长形成阻塞
+					 e.g.  文件的读写过程，网络数据发送过程
+
+非阻塞IO ： 通过修改IO事件的属性，使其变为非阻塞的状态。（改变了第一种阻塞的状况）
+
+通常和循环搭配使用，不断检测阻塞条件是否已经满足。
+
+s.setblocking()
+功能： 将套接字设置为非阻塞状态
+参数： bool   设置为False则表示设置为非阻塞
+
+超时检测
+
+将原本阻塞的函数，设置一个阻塞的最长时间，在规定时间内如果条件达到则正常执行，如果仍然阻塞则抛出异常
+
+s.settimeout(sec)
+功能 ： 设置套接字超时时间
+参数 ： 设置的时间
+
+IO多路复用
+
+定义 ： 同时监控多个IO事件，当哪个IO事件准备就绪就执行哪个IO事件。以此形成，多个IO事件都可以操作，不必诸个等待执行的效果。
+
+准备就绪：IO事件即将发生的临界状态
+
+import select
+
+select ----》 windows  linux  unix
+poll ---》 linux unix
+epoll --》 linux  unix
+
+ r, w, x = select(rlist, wlist, xlist[, timeout]) 
+ 功能：监控IO事件，阻塞等待IO事件的发生
+ 参数：rlist  列表  存放我们监控等待处理的IO事件
+       wlist  列表  存放我们要主动处理的IO事件
+			 xlist  列表  存放如果发生异常需要我们处理的
+			 timeout 数字  超时时间
+返回值：r  列表   rlist当中准备就绪的IO
+        w  列表   wlist当中准备就绪的IO
+				x  列表   xlist当中准备就绪的IO
+
+注意事项 ： 
+1.在处理IO过程中不应该发生死循环（某个IO单独占有服务器）
+2.IO多路复用行了一种并发的效果，效率较高
+
+练习 ： 写一个select服务端  同时关注客户端端的连接，客户端的发送和终端的输入。将客户端发送的内容和终端输入的内容均写入到一个文件中
+
+
+位运算
+按照二进制位进行操作运算
+
+&(按位与)    |（按位或）    ^（按位异或）
+<<（左移）    >>（右移） 
+
+11  1011 
+14  1110
+
+&   1010  一0则0
+|   1111  一1则1
+^   0101  相同为0不同为1
+11 << 2  ==> 44   右侧补0 
+14 >> 2  ==> 3    挤掉低位的数字
+
+使用 ： 1. 在做底层硬件的寄存器操作
+        2. 在做标志位过滤时
+
+poll
+
+1. 创建poll对象
+p = select.poll()
+2. 添加关注对象
+p.register(s，POLLIN | POLLERR)
+
+p.unregister(s)
+
+poll IO事件类型分类
+POLLIN POLLOUT  POLLERR POLLHUP  POLLPRI  POLLVAL 
+rlist   wlist   xlist    断开   紧急处理  无效数据
+
+3. 进行监控
+events = p.poll()
+功能： 阻塞等待register的事件发生
+返回值 ： events 是一个列表，列表中每个元素表示准备就绪需要处理的IO
+  [(fileno,event),          (),()]
+	 描述符 具体什么就绪了
+
+描述符地图｛s.fileno(): s｝
+4. 处理IO事件
+
+作业 ： 1. 熟练 写出 select server代码
+        2. 能够描述IO多路复用的执行原理和内部机制
+				3. 巩固HTTPserver的代码---》理解HTTP服务器执行流程

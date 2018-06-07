@@ -132,7 +132,7 @@ s.getsocket(level, optname)
  广播用量：占用大量的带宽造成网络阻塞
 
  tcp应用之 http传输
-
+ 
  HTTP协议 ---> 超文本传输协议
  用途： 
   1、编写基于http协议的数据传输程序

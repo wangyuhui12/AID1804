@@ -28,3 +28,5 @@ while True:
                 rlist.remove(r)
             else:
                 f.write(data.decode())
+                # 需要回复,否则客户端不能退出,input决定
+                r.send("回复消息".encode())

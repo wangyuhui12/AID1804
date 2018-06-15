@@ -1,0 +1,142 @@
+
+前情回顾
+
+线程
+    线程间的通信 ---> 全局变量
+    线程间同步互斥 ----> Event Lock
+    python线程的GIL  ----->  python 中线程效率低下
+
+进程和线程  区别和联系， 使用情况
+
+服务器： 
+  循环服务器：
+    同一时刻只能有一个客户端占有服务器
+
+  并发服务器：
+    IO 并发
+        io多路复用 ： 不希望IO长时间阻塞
+
+    多进程 多线程并发
+        多进程 ： 资源的消耗较多
+        多线程 ：　
+
+多进程并发编程：
+
+    fork tcp : 当有一个客户端连接则创建一个新的进程为其服务，　父进程继续等待接受新的客户端请求
+
+    文件服务器　　　　　　　　　　　
+
+****************************************************
+
+cookie
+
+文件处理函数：
+
+os.listdir(PATH)
+    获取一个目录内文件列表（隐藏文件也会显示）
+
+os.path.isfile() 
+    判断一个文件的类型是否为普通文件
+
+os.path.isdir()
+    判断一个文件的类型是否为目录
+
+
+threading 的多线程并发
+
+对比多进程并发：
+优点　：资源消耗小
+缺点 ：需要注意共享资源的争夺
+      Python多线程会受到GIL的影响
+
+实现步骤：
+    1、创建套接字， 绑定、监听
+    2、接受客户端连接请求，创建新的线程
+    3、主线程继续等待其他客户端连接， 分支线程执行客户端请求
+    4、处理完客户端请求后， 分支线程退出， 关闭客户端套接字
+
+socket 服务器集成模块
+
+python2 SocketServer
+python3 socketserver
+
+功能：
+    通过模块的接口完成基于多进程/多线程的tcp/udp 的 socket并发程序
+
+模块类：
+
+DatagramRequestHandler      处理UDP请求
+StreamRequestHandler        处理TCP请求
+
+UDPServer                   提供udp服务端类
+TCPServer                   提供tcp服务端类
+
+ForkingMixIn                提供进程创建   
+ForkingTCPServer       ---->ForkingMixIn + TCPServer 
+ForkingUDPServer       ---->ForkingMixIn + UDPServer
+
+ThreadingMixIn              提供线程创建
+ThreadingTCPServer     ---->ThreadingMixIn + TCPServer 
+ThreadingUDPServer     ---->ThreadingMixIn + UDPServer
+
+基于多线程并发的　HTTPServer
+ 
+HTTPServer 的作用
+
+１、接受浏览器发送的http请求
+２、对http请求进行解析
+３、组织相应内容进行回发
+
+升级
+* 使用多线程的并发可以同时处理多个客户端请求
+* 增加简单的应用程序，　使浏览器不仅可以访问静态网页，也可以访问后台程序
+* 使用类对服务器功能模块进行封装
+
+技术点　：　threading   并发
+        tcp socket　套接字
+        http协议内容响应内容进行字符串拼接
+
+
+协程
+
+定义　：　纤程　微线程，　协程本质只有一个线程在运行
+
+功能原理 ：通过应用层程序，　记录上下文栈区，实现在程序执行过程中的跳跃，选择可以不阻塞的部分执行，从而提高IO的执行效率
+
+优点　：　
+    资源消耗很少
+    无需多线程那样来回切换的开销
+    无需进行同步互斥操作
+    IO并发性好
+
+缺点　：　
+    无法利用计算机的多核资源
+    程序不能够　一个客户端单独长时间占有服务端
+
+yield  ---->　　协程的基本实现关键字
+
+模块
+greenlet
+    greenlet.greenlet()
+    gr.switch()
+    不能人为控制转换
+    
+gevent　模块
+１、将协程事件封装为函数
+
+gevent.spawn(func, argv)
+功能：　将事件变为协程事件并启动
+参数：
+　func   传入函数变为协程
+　args   给func函数传参，不定项形参
+返回值：　协程对象
+
+gevent.joinall()
+功能：　回收协程
+
+gevent.sleep(n)
+功能：　模拟IO阻塞的情况
+
+from gevent import monkey
+monkey.patch_all()
+功能：　在导入socket模块之前使用，修改socket的IO设置行为

@@ -1,0 +1,228 @@
+任务安排
+
+什么是项目，注意事项
+项目中的文档说明
+项目工具推荐
+
+* 电子词典
+* httpserver 带框架版本
+*******************************************
+
+什么是项目
+
+软件项目：实现具有一定完整性实用性功能的软件
+
+需求分析--》概要设计--》项目规划--》详细设计-》
+                                 --》代码实现-》
+
+--》修改补充--》项目测试--》项目发布-》后期维护
+--》代码自测
+
+需求分析 ： 确定用户的真实需求
+1. 对用户需求反复确认，形成需求说明文档
+2. 对项目的实施难度和可行性有基本判断
+3. 文档需要使用通俗准确的表达，让客户确认
+
+概要设计：针对项目进行分析，确定整体技术方向
+1. 确定功能模块
+2. 确定使用的技术
+3. 确定整体的逻辑流程
+4. 确定自定义的协议
+5. 完成流程图，概要设计文档等开发指导文件
+
+项目规划：确定项目开发的时间轴和流程
+1. 确定开发工作的先后顺序和并行事件
+2. 确定人员分配，时间轴节点，事件里程碑
+3. 通过甘特图，思维导图等指导工作
+
+详细设计： 对项目进行具体设计
+1.对项目具体实现进行设计
+2.完成详细设计文档
+  思路，逻辑说明，功能说明，重要变量，技术点，数据结构，代码模块说明等
+
+项目编码: 实现项目代码
+1. 写代码
+2. 技术攻关
+3. 代码整合，自测
+
+项目测试：按照项目要求进行测试
+1. 测试工程师完成测试工作
+2. 根据测试结果进行bug修改
+
+项目发布： 项目部署发布
+1.项目提交用户，部署发布
+2.编写使用说明文档
+
+项目的注意事项：
+* 良好的项目规划是按时完成项目的前提
+* 良好的文档是项目的保障
+* 及时避免项目中出现的冲突
+
+项目工具使用
+
+编写文档： word  ppt  excel  markdown  LaTex
+项目流程图： xMind  Mindmanager  visio
+项目管理： project
+代码管理： svn  git
+
+
+电子词典
+
+功能说明
+
+1. 用户能够注册和登录
+   登录 需用用户名和密码进行登录
+	 注册 要求用户名和密码 用户名不能和已有的重复
+
+2. 用户信息能够长期保存
+   要求使用数据库保存 mysql
+
+3. 要求能够满足多个客户端同时操作词典
+4. 用户运行客户端即 ）
+6. 查词 ： 可以循环查询英语单词 摁##退出查词
+         文本操作 
+				 将单词本中的单词存到数据库中
+
+7. 查看历史记录：查看当前用户的历史查词情况
+    username   word    time
+
+8. 单词本特征
+  * 每个词占一行
+	* 后面的单词比前面的大
+	* 单词和解释之间有空格
+
+提示：
+
+结构：c/s结构 
+		服务器： 数据库交互，注册，登录，查词，
+		         历史记录， 并发(多进程)
+
+		客户端： 打印命令选择界面，发出请求，
+		         接收服务端信息，展示内容
+
+技术点： 并发 fork   数据库操作  建立表
+         网络传输tcp
+
+需要模块： os  socket  pymysql
+
+1. 确定数据表结构
+
+user   hist    words
+
+user : id   name   passwd
+hist : id  word  time   user_id
+       id  name   word   time
+words ： id   word   interpret
+
+创建数据库
+create database dict default charset=utf8;
+
+创建user
+ create table user (id int auto_increment primary key,name varchar(32) not null,passwd varchar(10) default '000000');
+
+创建hist
+ create table hist (id int auto_increment primary key,name varchar(32) not null,word varchar(32) not null,time varchar(64) not null);
+
+ 创建 words
+  create table words (id int auto_increment primary key,word varchar(32) not null,interpret text not null);
+
+2. 考虑如何处理单词本（文本，数据库？）
+3. 确定项目的整体结构
+4. 完成整体结构的框架代码
++++++++++++++++++++++++++++++++++++++++++++++
+
+服务器：
+
+main() :  创建套接字--》 父子进程 --》父进程等           待新的客户端连接
+
+child():  子进程接收请求 根据请求调用相应的功            能函数
+
+login():  和数据库比对判断是否允许登录
+
+register()：判断是否和其他用户重名 
+
+query(): 查词，给客户端 ， 存入到历史记录
+
+history()：查询数据库，将结果给客户端
+
+客户端：
+
+main() : 创建套接字，发起连接 --》 一级界面
+
+login():  发登录信息--》进入二级界面
+
+register(): 注册
+
+query : 发送词，接收反馈，打印
+history：发送请求，接收反馈，打印
+
+
+cookie  
+import traceback 
+在except 中使用
+traceback.print_exc()  打印更详细的异常信息
+
+import getpass
+p = getpass.getpass()
+
+
+pip 工具的使用 
+
+pip： Python的标准第三方库管理工具
+
+pip的安装
+
+Python2  apt-get install  python-pip
+python3  apt-get install  python3-pip
+
+安装python包
+pip3  install  Package
+
+e.g.  sudo  pip3  install  requests
+
+升级软件包
+pip3 install  --upgrade  Package
+
+卸载软件包
+pip3  uninstall   Package
+
+查看软件包清单
+pip3  list
+
+查看软件包信息
+pip3 show Package
+
+查找软件包
+pip3 search  Package 
+
+导出python软件环境
+pip3 freeze > requirements.txt
+
+根据文档进行python软件环境安装
+pip3  install  -r  requirements.txt
+
+
+pdb调试
+
+pdb模块 ---》 提供调试手段，去调试代码
+
+功能 ： 设置断点   单步执行   进入函数 
+        查看变量值
+
+调试命令 
+break, b  设置断点
+continue，c  继续执行 
+list，l  查看当前代码段
+step，s  进入函数
+exit，q  退出
+next，n  执行下一行
+pp   打印变量
+help  帮助
+
+import pdb 
+pdb.set_trace()
+功能 ： 设置初始断点，开始PDB调试
+
+直接使用pdb调试模式运行程序
+python3 -m pdb file.py 
+

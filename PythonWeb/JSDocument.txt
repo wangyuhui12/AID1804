@@ -1,0 +1,202 @@
+
+Semicolons(;)
+    Semicolons seprate JavaScript statements.
+
+    On the web, you might see examples without semicolons.
+    Ending statements with semicolon is not required, but highly recommended.
+
+curly brackets ({})
+
+JavaScript Keywords
+  JavaScript Keywords are used to identify actions to be performed.
+  JavaScript statements often start with a keyword to identify the JavaScript action to be performed.
+
+  break     Terminates a switch or a loop
+  debugger  Stops the execution of JavaScript, and calls(if available) the debugging function
+  function  Declares a function
+  switch    Marks a block of statements to be executed, depending on different cases
+  try...catch  Implements error handling to a block of statements
+
+*** JavaScript keyword are reserved words. reserved words cannot be used a names for variables.
+
+JavaScript Values
+  The JavaScript syntax defines two types of values: Fixed values and variable values.
+  Fixed values are called literals. variable values are called variable.
+
+JavaScript literals
+  The most important rules for writing fixed values are:
+  Numbers are written with or without decimals.
+  String are text, written within double or single quotes.
+
+JavaScript Variables
+  In a programming language, variable are used to store data values.
+  JavaScript uses the var keyword to declare variable.
+  An equal sign is used to assign values to variables.
+
+JavaScript Identifiers
+  Identifiers are names.
+  Indertifers can be short names(like x and y) or more descriptive names(age, sum, totalVolume).
+  In JavaScript, Identifiers are used to name variables(and keyword, and function, and labels).
+  The first character must be a letter, or an underscore(_), or a dollor sign($).
+
+  ***
+    Numbers are not allowed as the first character.
+    JavaScript is Case Sensitive.
+
+JavaScript Comments
+  1. JavaScript comments can be used to explain JavaScript code, and to make it more readable.
+  2. JavaScript comments can also be used to prevent execution, when testing alternative code.
+
+  Single Line Comments
+    //  comments
+  Multi-line Comments
+    /*
+      ....
+    */
+    It is most common to use single line comments.
+    Block comments are often used for formal documention.
+
+
+JavaScript Variables
+  JavaScript variable are containers for string data values.
+  var x = 5;     ---->  x stores the vales 5
+
+Creating a variable in JavaScript is called "declaring" a variable.
+You can declare a JavaScript variable with the var keyword.
+  var carName;
+  carName = "Volvo";
+  ----equal to---
+  var carName = "Volvo";
+** It's a good programming practice to declare all variable at the beginning of a script.
+
+
+Value = undefined
+  A variable declared without a value will have the value undefined.
+
+JavaScript Arithmetic
+    Add strings:  strings will be concatenated;
+    ex:
+      var x = "John" + " " + "Doe";
+      var x = "5" + 2 + 3;    ---> "523"
+      If put a number in quotes, the rest of the numbers will be treated as strings, and concatenated.
+
+JavaScript Arithmetic Operators
+  Arithmetic Operators are used to perform arithmetic on numbers:
+    Operator                    Description
+       +                         Addition
+       -                         Subraction
+       *                         Multiplication
+       /                         Division
+       %                         Modulus
+       ++                        Increment
+       --                        Decrement
+
+JavaScript Comparision Operators
+   Operator              Description
+     ==                  equal to
+     ===                 equal value and equal type
+     !=                  not equal
+     !==                 not equal value or not equal type
+      ?                  ternary operator
+
+JavaScript Type Operators
+    Operator            Description
+     typeof             Returns the type of a variable
+     instanceof         Returns true if an object is an instance of an object type
+
+var x = {firstName: "John", lastName: "Doe"};
+
+JavaScript Types are Dynamic.
+  JavaScript has dynamic types.This means that the same variable can be used to hold different data types:
+      var x;   // Now x is undefined
+      x = 5;   // Now x is a Number
+      x = "John";  //Now x is a String
+
+JavaScript Arrays
+   1. JavaScript arrays are written with square brackets.
+   2. Array item are separated by commas.
+       var cars = ["Saab", "Volvo", "BMW"];
+       Array indexes are zero-based.
+
+JavaScript Objects
+    1. JavaScript objects are written with curly braces({}).
+    2. Object properties(attribute) are written as name: value pairs, separated by commas.
+    3. The object(perison) in the example the following has 4 properties;
+     var person = {firstName: "John", lastName: "Doe", age:50, eyeColor:"blue"};
+
+The typeof Operator
+  To find the type of a JavaScript variable.
+
+undefined
+    In JavaScript, a variable without a value, has the value undefined. The typeof is also undefined.
+        var car;    //Value is undefined, type is undefined
+
+    Any variable can be emptied, by setting the vallue to undefined. The type will alse be undefined.
+        car = undefined;   // Value is undefined, type is undefined
+
+Empty Values
+  An empty value has nothing to do with undefined.
+  An empty string has both a legal value and a type.
+  ex:
+    var car = "";    // The value is "", the typeof is "string"
+
+Null
+  In JavaScript null is "nothing". It is supposed to be something that doesn't exist.
+  The type of null is an object.
+  *****You cna consider it a bug in JavaScript that typeof null is an object. It should be null.*****
+
+Different Between undefined an Null
+    Undefined and null are equal in value but different in type:
+
+      typeof undefined    // undefined
+      typeof null         // object
+
+      null === undefined  // false
+      null == undefined   // true
+
+Primitive Data
+  A primitive data value is a single simple data value with no additional properties and methods.
+  The typeof operator can return one of these primitive types:
+      string
+      number
+      boolean
+      undefined
+
+
+Compex Data
+  The typeof operator can return one of two complex types:
+      function
+      object
+
+  The typeof operator returns object for both objects, arrays, and null.
+  The typeof operator does not return object for functions.
+  ex:
+    typeof {name: "Jonhn", age: 34};   // Returns "object"
+    typeof null       //  Returns "object"
+    typeof function myFunc(){}     // Returns "function"
+  The typeof operator returns "object" for arrays because in JavaScript arrays are objects.
+
+------------------------------------------------------------------
+
+JavaScript Functions
+    1. A JavaScript function is a block of code designed to perform a particular task.
+    2. A JavaScript function is executed when "something" invokes it(call it).
+ex:
+function myFuntion(p1, p2) {
+    return p1 * p2     // The function returns the product of p1 and p2
+}
+
+Function Invocation(invokes)
+ The code inside the function will execute when "something" invokes(calls) the function:
+    1. When an event occurs(When a user clicks a button)
+    2. When it is invoked(called) from JavaScript code
+    3. Automatically(self invoked)
+
+Why Functions?
+    You can reuse code: Define the code once, and use it many times.
+    You can use the same code many times with different arguments, to produce different results.
+
+
+
+
+    

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>DOM</title>
+    <script type="text/javascript">
+      function createImage(){
+        var imageEle = document.createElement('img');
+        imageEle.setAttribute('src', '1.jpg');
+        var divEle = document.getElementById('div');
+        divEle.appendChild(imageEle);
+      }
+    </script>
+  </head>
+  <body>
+    <p>我是段落１</p>
+    <div id="div" style="border: 2px solid #foo"></div>
+    <p>我是段落２</p>
+    <input type="button" value="clickme" onclick="createImage()">
+  </body>
+</html>

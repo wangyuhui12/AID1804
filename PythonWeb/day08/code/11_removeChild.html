@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>DOM编程</title>
+    <script type="text/javascript">
+      function removeParagraph(){
+        // get Object
+        var pEle = document.getElementById('p');
+        // remove object
+        document.body.removeChild(pEle);
+      }
+    </script>
+  </head>
+  <body>
+    <p id="p">我是段落</p>
+    <input type="button" value="click me" onclick="removeParagraph()">
+  </body>
+</html>

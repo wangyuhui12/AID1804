@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Properties</title>
+    <script type="text/javascript">
+      function changeLinkAttr(){
+        //1.get Object
+        var linkEle = document.getElementById('link');
+        //2.set Properties
+        linkEle.setAttribute('href', 'http://www.google.com');
+        linkEle.setAttribute('target', '_blank');
+      }
+    </script>
+  </head>
+  <body>
+    <p><a href="#" id="link">Google</a></p>
+    <p><input type="button" value="clikme" onclick="changeLinkAttr()"></p>
+  </body>
+</html>

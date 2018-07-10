@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>数组</title>
+    <script type="text/javascript">
+      var data = [1, 2, 3, 4, 5];
+      var arr = data.map(function(val){
+        return Math.pow(val,3);
+      });
+      console.log(Array.isArray(arr));
+      console.log(arr);
+      // 类似的案例
+      var extend = ['GIF', "JPG", 'JPEG', 'PNG'];
+      //将extends数组成员都转换为小写字母
+      var arr = extend.map(function(val){
+        return val.toLowerCase();
+      });
+      console.log(arr);
+    </script>
+  </head>
+  <body>
+
+  </body>
+</html>

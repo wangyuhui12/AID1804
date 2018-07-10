@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>DOM编程</title>
+    <script type="text/javascript">
+      function empty(){
+        //　get object
+        var divEle = document.getElementById('div');
+        // 获取div内子节点　的数量
+        for(var n=0;n<divEle.childNodes.length;n++){
+          divEle.removeChild(divEle.childNodes[n]);
+          n--;
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <p>我是段落</p>
+    <div style="border:2px solid #f00" id='div'>
+      <h1>11</h1>
+      <p>22</p>
+      <p>33</p>
+      <p>44</p>
+      <h2>55</h2>
+    </div>
+    <p>我也是段落</p>
+    <input type="button" value="单击我，删除div内所有的子节点" onclick="empty()">
+  </body>
+</html>

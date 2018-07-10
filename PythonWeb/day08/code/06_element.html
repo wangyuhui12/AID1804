@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>DOM</title>
+    <script type="text/javascript">
+      function changeAttr(){
+        //1 find object
+        var pEle = document.getElementById('p');
+        // set Properties
+        pEle.setAttribute('align', 'center');
+      }
+
+    </script>
+  </head>
+  <body>
+    <p id="p">The People's Republic Of China</p>
+    <p><input type="button" value="居中" onclick="changeAttr()"></p>
+  </body>
+</html>

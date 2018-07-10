@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>百钱买百鸡</title>
+    <script type="text/javascript">
+      //精简的写法
+      count = 0;
+      for(var n=0;n<=20;n++){
+        for(var i=0;i<=33;i++){
+        //小鸡的数量 100-n-i
+          //百钱买百鸡
+          count++;
+          if(5*n + i*3 + (100-i-n)/3 == 100){
+            console.log(n +" "+  i +' '+ (100-n-i));
+          }
+        }
+      }
+      console.log(count);
+      var arr = ["Tom", "Rose", "Frank", "Jerry"];
+      var len = arr.length;
+      for(var n=0;n<len;n++){
+        console.log(arr[n]);
+      }
+    </script>
+  </head>
+  <body>
+
+  </body>
+</html>

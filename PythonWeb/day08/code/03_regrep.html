@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>RegExp</title>
+    <script type="text/javascript">
+      var str = 'a1b2c3d4';
+      str = str.replace(/(\d+)/g,'<span style="color:red">$1</span>');
+      // document.write(str);
+      //面试题
+      var date = "12/25/2018";
+      //用一条语句将其输出"2018-12-25"
+    //   var str1 = date.replace(/(((\d{2})\/(\d{2}))\/({\d{4}))/,
+    // '<p>1表示$1</p><p>2表示$2</p><p>3表示$3</p><p>4表示$4</p><p>5表示$5</p>');
+      var date = date.replace(/(\d{1,})\/(\d{1,})\/(\d{4})/, '$3-$1-$2');
+      document.write('中文日期格式是：'+ date);
+    </script>
+  </head>
+  <body>
+
+  </body>
+</html>

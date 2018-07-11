@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>HTML DOM</title>
+    <script type="text/javascript">
+      function checkedItem(){
+        var checkboxEle = document.getElementById('checkbox');
+        // 设置属性
+        checkboxEle.checked = true;
+        checkboxEle.disabled = true;
+      }
+    </script>
+  </head>
+  <body>
+    <p><input type="checkbox" id="checkbox"></p>
+    <p><input type="button" value="单机我，让复选框选中" onclick="checkedItem()"></p>
+  </body>
+</html>

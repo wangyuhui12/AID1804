@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>HTML DOM</title>
+      <script type="text/javascript">
+        function submitForm(){
+          var formEle = document.getElementById('form');
+          //调用表单对象
+          formEle.submit();
+        }
+      </script>
+  </head>
+  <body>
+    <form id="form" action="1.php" method="post">
+      <!-- <input type="submit" value="注册"> -->
+      <table>
+        <tr>
+          <td>用户名</td>
+          <td><input type="text" name"username" id="username"></td>
+        </tr>
+        <tr>
+          <td>邮箱</td>
+          <td><input type="text" name="email" id="email"></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><b onclick="submitForm()">免费注册</b></td>
+        </tr>
+      </table>
+    </form>
+  </body>
+</html>

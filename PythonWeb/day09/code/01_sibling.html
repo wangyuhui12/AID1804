@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>DOM program</title>
+    <script type="text/javascript">
+      function changeAttr(){
+        var pEle1 = document.getElementById('p');
+        var pEle2 = pEle1.nextSibling.nextSibling;
+        pEle2.setAttribute('align', 'center');
+      }
+    </script>
+  </head>
+  <body>
+    <p id="p">段落1</p>
+    <p>段落2</p>
+    <input type="button" value="Click Me" onclick="changeAttr()">
+  </body>
+</html>

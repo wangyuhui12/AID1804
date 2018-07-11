@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>HTML DOM</title>
+    <script type="text/javascript">
+      function changeAttr(){
+        var tableEle = document.getElementById('table');
+        tableEle.width = '500';
+        tableEle.border = '3';
+        // noted the method of cellPadding and cellSpacing
+        tableEle.cellSpacing = '0';
+        tableEle.align = 'center';
+      }
+    </script>
+  </head>
+  <body>
+    <table id="table">
+      <tr>
+        <td>中国</td>
+        <td>中国</td>
+      </tr>
+      <tr>
+        <td>中国</td>
+        <td>中国</td>
+      </tr>
+      <tr>
+        <td>中国</td>
+        <td>中国</td>
+      </tr>
+    </table>
+    <input type="button" value="单机我，控制表格是属性" onclick="changeAttr()">
+  </body>
+</html>

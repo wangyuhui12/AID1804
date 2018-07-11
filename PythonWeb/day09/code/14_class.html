@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>HTML DOM</title>
+    <style type="text/css">
+      .f1{
+        font-size: 30px;
+        color: #f00;
+      }
+    </style>
+    <script type="text/javascript">
+      function applyClass(){
+        var pEle = document.getElementById('p');
+        // 注意className类的写法
+        pEle.className = 'f1';
+      }
+    </script>
+  </head>
+  <body>
+    <p id="p">中华人民共和国万岁</p>
+    <input type="button" value="单机我，为段落使用f1css类" onclick="applyClass()">
+  </body>
+</html>
